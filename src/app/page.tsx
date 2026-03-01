@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { z } from "zod";
+import { loginSchema } from "@/lib/validations";
 import AuthLayout, {
   inputStyle,
   btnPrimary,
@@ -17,6 +19,26 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberLogin, setRememberLogin] = useState(false);
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      loginSchema.parse({ email, password });
+      setErrors({});
+      // Proceed with actual login logic here
+      router.push("/dashboard");
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors: { email?: string; password?: string } = {};
+        error.errors.forEach((err) => {
+          if (err.path[0] === "email") newErrors.email = err.message;
+          if (err.path[0] === "password") newErrors.password = err.message;
+        });
+        setErrors(newErrors);
+      }
+    }
+  };
 
   return (
     <AuthLayout>
@@ -62,7 +84,7 @@ export default function LoginPage() {
 
       {/* Form */}
       <form
-        onSubmit={(e) => { e.preventDefault(); router.push("/dashboard"); }}
+        onSubmit={handleLogin}
         className="form-inner"
       >
         {/* Email */}
@@ -77,11 +99,12 @@ export default function LoginPage() {
           type="email"
           placeholder="Enter your email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ ...inputStyle, marginBottom: "12px" }}
+          onChange={(e) => { setEmail(e.target.value); if (errors.email) setErrors({ ...errors, email: undefined }); }}
+          style={{ ...inputStyle, marginBottom: errors.email ? "4px" : "12px", borderColor: errors.email ? "#ef4444" : "#e5e5ed" }}
           onFocus={handleFocus}
           onBlur={handleBlur}
         />
+        {errors.email && <span style={{ color: "#ef4444", fontSize: "11px", marginBottom: "8px", display: "block" }}>{errors.email}</span>}
 
         {/* Password */}
         <label
@@ -95,11 +118,12 @@ export default function LoginPage() {
           type="password"
           placeholder="Enter your Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={inputStyle}
+          onChange={(e) => { setPassword(e.target.value); if (errors.password) setErrors({ ...errors, password: undefined }); }}
+          style={{ ...inputStyle, borderColor: errors.password ? "#ef4444" : "#e5e5ed", marginBottom: errors.password ? "4px" : "0" }}
           onFocus={handleFocus}
           onBlur={handleBlur}
         />
+        {errors.password && <span style={{ color: "#ef4444", fontSize: "11px", display: "block", marginTop: "4px" }}>{errors.password}</span>}
 
         {/* Remember + Forgot */}
         <div

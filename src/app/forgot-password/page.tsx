@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
+import { z } from "zod";
+import { forgotPasswordSchema } from "@/lib/validations";
 import AuthLayout, {
   inputStyle,
   btnPrimary,
@@ -24,7 +26,22 @@ export default function ForgotPasswordPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPass, setShowNewPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
+  const [emailError, setEmailError] = useState<string | undefined>();
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  const handleSendResetLink = (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      forgotPasswordSchema.parse({ email: resetEmail });
+      setEmailError(undefined);
+      // Proceed with sending OTP logic here
+      setStep("otp");
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setEmailError(error.errors[0]?.message);
+      }
+    }
+  };
 
   const handleOtpChange = (index: number, value: string) => {
     if (value.length > 1) value = value.slice(-1);
@@ -98,7 +115,7 @@ export default function ForgotPasswordPage() {
               No worries! Enter your email and we&apos;ll send you a verification code
             </p>
 
-            <form onSubmit={(e) => { e.preventDefault(); setStep("otp"); }} className="form-inner">
+            <form onSubmit={handleSendResetLink} className="form-inner">
               <label htmlFor="reset-email" style={{ fontSize: "13px", fontWeight: 500, color: "#555", marginBottom: "2px" }}>
                 Email Address
               </label>
@@ -107,12 +124,12 @@ export default function ForgotPasswordPage() {
                 type="email"
                 placeholder="Enter your email address"
                 value={resetEmail}
-                onChange={(e) => setResetEmail(e.target.value)}
-                style={{ ...inputStyle, marginBottom: "20px" }}
+                onChange={(e) => { setResetEmail(e.target.value); if (emailError) setEmailError(undefined); }}
+                style={{ ...inputStyle, marginBottom: emailError ? "4px" : "20px", borderColor: emailError ? "#ef4444" : "#e5e5ed" }}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
-                required
               />
+              {emailError && <span style={{ color: "#ef4444", fontSize: "11px", marginBottom: "16px", display: "block" }}>{emailError}</span>}
               <button type="submit" style={btnPrimary} onMouseEnter={btnHoverEnter} onMouseLeave={btnHoverLeave}>
                 Send OTP
               </button>
