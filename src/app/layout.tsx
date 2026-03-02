@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AFA Miraee",
+  title: "Miraee",
   description: "Login to your account",
 };
 
