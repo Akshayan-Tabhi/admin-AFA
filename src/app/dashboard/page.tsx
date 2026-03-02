@@ -259,9 +259,9 @@ export default function DashboardPage() {
   const handleLogout = () => {
     // Clear any auth tokens/state here if needed
     if (isMiraeeOrgs) {
-      router.push('/?demo=miraee-orgs');
+      router.push('/login?demo=miraee-orgs');
     } else {
-      router.push('/');
+      router.push('/login');
     }
   };
 
@@ -331,7 +331,7 @@ export default function DashboardPage() {
 
         {/* ═══ MAIN ═══ */}
         <div className="flex-1 flex flex-col min-w-0 bg-gradient-to-b from-[#f9f9fc] via-[#f3f3f8] to-[#eff0f5]">
-          <div className="h-[60px] flex items-center p-[0_24px] gap-[12px] shrink-0 bg-white/75 backdrop-blur-xl border-b border-black/5 shadow-[0_1px_8px_rgba(0,0,0,0.02),0_4px_16px_rgba(0,0,0,0.01)]">
+          <div className="h-[60px] max-sm:h-[52px] flex items-center px-6 max-sm:px-4 gap-3 shrink-0 bg-white/75 backdrop-blur-xl border-b border-black/5 shadow-[0_1px_8px_rgba(0,0,0,0.02),0_4px_16px_rgba(0,0,0,0.01)]">
             {!sidebarOpen && (
               <button className="w-[38px] h-[38px] flex items-center justify-center bg-white/80 border border-black/5 rounded-[10px] cursor-pointer text-[#999] transition-all duration-250 shadow-[0_1px_4px_rgba(0,0,0,0.03)] hover:bg-white hover:border-black/10 hover:text-[#666] hover:shadow-[0_3px_12px_rgba(0,0,0,0.06)] hover:-translate-y-[1px]" onClick={() => setSidebarOpen(true)}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -343,7 +343,7 @@ export default function DashboardPage() {
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-[36px_28px_16px] md:p-[36px_28px_16px] p-[24px_16px_12px] [&::-webkit-scrollbar]:w-[5px] [&::-webkit-scrollbar-thumb]:bg-[#dddde5] [&::-webkit-scrollbar-thumb]:rounded-[5px]">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-[36px_28px_16px] [&::-webkit-scrollbar]:w-[5px] [&::-webkit-scrollbar-thumb]:bg-[#dddde5] [&::-webkit-scrollbar-thumb]:rounded-[5px]">
             <div className="max-w-[740px] w-full mx-auto">
               {messages.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center gap-[20px] animate-in slide-in-from-bottom-5 fade-in duration-500">
@@ -384,7 +384,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="p-[12px_28px_28px] md:p-[12px_28px_28px] p-[10px_16px_20px] shrink-0">
+          <div className="p-[10px_16px_20px] sm:p-[12px_20px_24px] md:p-[12px_28px_28px] shrink-0">
             <div className="max-w-[740px] mx-auto relative bg-white border-[1.5px] border-black/5 rounded-[24px] focus-within:border-[#e85d45]/25 focus-within:shadow-[0_0_0_4px_rgba(232,93,69,0.05),0_12px_40px_rgba(0,0,0,0.06)] transition-all duration-300 flex items-end">
               <textarea ref={inputRef} rows={1} placeholder="Search flights, hotels, or cabs..." value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={handleKeyDown}
                 className="flex-1 bg-transparent border-none outline-none p-[16px_20px] text-[14px] text-[#2d2d3a] placeholder:text-[#b5b5c4] resize-none overflow-hidden min-h-[54px] max-h-[200px]"
@@ -400,7 +400,7 @@ export default function DashboardPage() {
         </div>
 
         {/* ═══ RIGHT PANEL ═══ */}
-        <div className={`transition-all duration-350 shrink-0 overflow-hidden border-l border-black/5 flex flex-col shadow-[-4px_0_24px_rgba(0,0,0,0.02)] md:relative fixed top-0 right-0 z-[100] h-screen bg-white ${rightPanelOpen ? "w-[380px] opacity-100" : "w-0 opacity-0 !border-none"}`}>
+        <div className={`transition-all duration-350 shrink-0 overflow-hidden border-l border-black/5 flex flex-col shadow-[-4px_0_24px_rgba(0,0,0,0.02)] md:relative fixed top-0 right-0 z-[100] h-screen bg-white ${rightPanelOpen ? "w-full sm:w-[320px] md:w-[380px] opacity-100" : "w-0 opacity-0 !border-none"}`}>
 
           {/* Agent Detail Overlay */}
           {viewedAgent && viewedDetail && (

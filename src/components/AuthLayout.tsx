@@ -5,110 +5,25 @@ import React from "react";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
-      <style jsx global>{`
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; width: 100%; }
-        body {
-          font-family: 'Inter', system-ui, -apple-system, sans-serif;
-          -webkit-font-smoothing: antialiased;
-          background: linear-gradient(145deg, #f2f0ed 0%, #eae8e5 50%, #e8e6e3 100%);
-        }
-        .login-wrapper {
-          min-height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 24px;
-        }
-        .login-card {
-          display: flex;
-          width: 100%;
-          max-width: 960px;
-          min-height: 600px;
-          background: #ffffff;
-          border-radius: 24px;
-          overflow: hidden;
-          box-shadow:
-            0 30px 80px rgba(0,0,0,0.08),
-            0 12px 32px rgba(0,0,0,0.05),
-            0 0 0 1px rgba(0,0,0,0.02);
-        }
-        .art-panel {
-          position: relative;
-          width: 42%;
-          flex-shrink: 0;
-          margin: 12px;
-          border-radius: 18px;
-          overflow: hidden;
-          background: #e8e6e3;
-        }
-        .form-panel {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding: 48px 52px;
-        }
-        .form-inner {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-          width: 100%;
-          max-width: 380px;
-        }
-        @media (max-width: 768px) {
-          .login-wrapper { padding: 16px; }
-          .login-card {
-            flex-direction: column;
-            max-width: 500px;
-            min-height: auto;
-            border-radius: 20px;
-          }
-          .art-panel {
-            width: auto;
-            height: 220px;
-            margin: 10px 10px 0 10px;
-            border-radius: 14px;
-          }
-          .form-panel { padding: 32px 28px 36px; }
-          .form-inner { max-width: 100%; }
-        }
-        @media (max-width: 480px) {
-          .login-wrapper { padding: 8px; }
-          .login-card { border-radius: 16px; }
-          .art-panel {
-            height: 170px;
-            margin: 8px 8px 0 8px;
-            border-radius: 12px;
-          }
-          .form-panel { padding: 24px 20px 28px; }
-          .form-panel h1 { font-size: 22px !important; }
-          .form-panel .subtitle { font-size: 12px !important; }
-        }
-      `}</style>
+    <div className="min-h-screen flex items-center justify-center p-6 sm:p-4 max-sm:p-2 bg-gradient-to-br from-[#f2f0ed] via-[#eae8e5] to-[#e8e6e3] font-[Inter,system-ui,-apple-system,sans-serif]">
+      <div className="flex w-full max-w-[960px] min-h-[600px] bg-white rounded-3xl overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.08),0_12px_32px_rgba(0,0,0,0.05),0_0_0_1px_rgba(0,0,0,0.02)] max-md:flex-col max-md:max-w-[500px] max-md:min-h-0 max-md:rounded-[20px] max-sm:rounded-2xl">
+        {/* LEFT - Artwork */}
+        <div className="relative w-[42%] shrink-0 m-3 rounded-[18px] overflow-hidden bg-[#e8e6e3] max-md:w-auto max-md:h-[220px] max-md:m-[10px_10px_0_10px] max-md:rounded-[14px] max-sm:h-[170px] max-sm:m-[8px_8px_0_8px] max-sm:rounded-xl">
+          <Image
+            src="/login-artwork.png"
+            alt="Decorative artwork"
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
 
-      <div className="login-wrapper">
-        <div className="login-card">
-          {/* LEFT - Artwork */}
-          <div className="art-panel">
-            <Image
-              src="/login-artwork.png"
-              alt="Decorative artwork"
-              fill
-              style={{ objectFit: "cover" }}
-              priority
-            />
-          </div>
-
-          {/* RIGHT - Form Content */}
-          <div className="form-panel">
-            {children}
-          </div>
+        {/* RIGHT - Form Content */}
+        <div className="flex-1 flex flex-col items-center justify-center p-[48px_52px] max-md:p-[32px_28px_36px] max-sm:p-[24px_20px_28px]">
+          {children}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
